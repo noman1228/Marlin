@@ -1,6 +1,5 @@
 #pragma once
 
-#define CONFIG_EXAMPLES_DIR "Creality/Ender-3 Pro/CrealityV422"
 #define CONFIGURATION_H_VERSION 02010300
 
 //===========================================================================
@@ -34,7 +33,7 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_CREALITY_V422
+  #define MOTHERBOARD BOARD_CREALITY_V4
 #endif
 
 /**
@@ -58,7 +57,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 250000
+#define BAUDRATE 115200
 //#define BAUD_RATE_GCODE     // Enable G-code M575 to set the baud rate
 
 /**
@@ -1181,10 +1180,10 @@
  *
  * :[2,3,4,5,6,7]
  */
-//#define ENDSTOP_NOISE_THRESHOLD 2
+#define ENDSTOP_NOISE_THRESHOLD 5
 
 // Check for stuck or disconnected endstops during homing moves.
-//#define DETECT_BROKEN_ENDSTOP
+#define DETECT_BROKEN_ENDSTOP
 
 //=============================================================================
 //============================== Movement Settings ============================
@@ -1345,7 +1344,7 @@
  *    - Normally-closed (NC) also connect to GND.
  *    - Normally-open (NO) also connect to 5V.
  */
-//#define Z_MIN_PROBE_PIN -1
+#define Z_MIN_PROBE_PIN PB1
 
 /**
  * Probe Type
@@ -1562,7 +1561,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 44, -6, -2.85 }
+#define NOZZLE_TO_PROBE_OFFSET { -39, -10, -1 }
 
 // Enable and set to use a specific tool for probing. Disable to allow any tool.
 #define PROBING_TOOL 0
@@ -2200,7 +2199,7 @@
 #endif
 
 // Add a menu item to move between bed corners for manual bed adjustment
-#define LCD_BED_TRAMMING
+//#define LCD_BED_TRAMMING
 
 #if ENABLED(LCD_BED_TRAMMING)
   #define BED_TRAMMING_INSET_LFRB { 30, 30, 30, 30 } // (mm) Left, Front, Right, Back insets
@@ -2263,7 +2262,7 @@
 #if ENABLED(Z_SAFE_HOMING)
   #define Z_SAFE_HOMING_X_POINT X_CENTER  // (mm) X point for Z homing
   #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // (mm) Y point for Z homing
-  //#define Z_SAFE_HOMING_POINT_ABSOLUTE  // Ignore home offsets (M206) for Z homing position
+  #define Z_SAFE_HOMING_POINT_ABSOLUTE  // Ignore home offsets (M206) for Z homing position
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
@@ -2351,7 +2350,7 @@
 #define EEPROM_BOOT_SILENT    // Keep M503 quiet and only give errors during first load
 #if ENABLED(EEPROM_SETTINGS)
   #define EEPROM_AUTO_INIT    // Init EEPROM automatically on any errors.
-  #define EEPROM_INIT_NOW   // Init EEPROM on first boot after a new build.
+  //#define EEPROM_INIT_NOW   // Init EEPROM on first boot after a new build.
 #endif
 
 // @section host
