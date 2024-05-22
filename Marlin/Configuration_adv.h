@@ -21,6 +21,8 @@
  */
 #pragma once
 
+#define CONFIG_EXAMPLES_DIR "Creality/Ender-3 Neo"
+
 /**
  * Configuration_adv.h
  *
@@ -1095,9 +1097,9 @@
   #define TRAMMING_POINT_NAME_4 "Back-Left"
 
   #define RESTORE_LEVELING_AFTER_G35    // Enable to restore leveling setup after operation
-  //#define REPORT_TRAMMING_MM          // Report Z deviation (mm) for each point relative to the first
+  #define REPORT_TRAMMING_MM          // Report Z deviation (mm) for each point relative to the first
 
-  //#define ASSISTED_TRAMMING_WIZARD    // Add a Tramming Wizard to the LCD menu
+  #define ASSISTED_TRAMMING_WIZARD    // Add a Tramming Wizard to the LCD menu
 
   //#define ASSISTED_TRAMMING_WAIT_POSITION { X_CENTER, Y_CENTER, 30 } // Move the nozzle out of the way for adjustment
 
@@ -1202,7 +1204,8 @@
  */
 //#define INPUT_SHAPING_X
 //#define INPUT_SHAPING_Y
-#if ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y)
+//#define INPUT_SHAPING_Z
+#if ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y, INPUT_SHAPING_Z)
   #if ENABLED(INPUT_SHAPING_X)
     #define SHAPING_FREQ_X  40.0        // (Hz) The default dominant resonant frequency on the X axis.
     #define SHAPING_ZETA_X   0.15       // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
@@ -1210,6 +1213,10 @@
   #if ENABLED(INPUT_SHAPING_Y)
     #define SHAPING_FREQ_Y  40.0        // (Hz) The default dominant resonant frequency on the Y axis.
     #define SHAPING_ZETA_Y   0.15       // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
+  #endif
+  #if ENABLED(INPUT_SHAPING_Z)
+    #define SHAPING_FREQ_Z  40.0        // (Hz) The default dominant resonant frequency on the Z axis.
+    #define SHAPING_ZETA_Z   0.15       // Damping ratio of the Z axis (range: 0.0 = no damping to 1.0 = critical damping).
   #endif
   //#define SHAPING_MIN_FREQ  20.0      // (Hz) By default the minimum of the shaping frequencies. Override to affect SRAM usage.
   //#define SHAPING_MAX_STEPRATE 10000  // By default the maximum total step rate of the shaped axes. Override to affect SRAM usage.
@@ -1505,7 +1512,7 @@
      * Use a height slightly above the estimated nozzle-to-probe Z offset.
      * For example, with an offset of -5, consider a starting height of -4.
      */
-    //#define PROBE_OFFSET_WIZARD_START_Z -4.0
+    #define PROBE_OFFSET_WIZARD_START_Z -1.0
 
     // Set a convenient position to do the calibration (probing point and nozzle/bed-distance)
     //#define PROBE_OFFSET_WIZARD_XY_POS { X_CENTER, Y_CENTER }
@@ -1530,7 +1537,7 @@
     #endif
 
     // Show Deploy / Stow Probe options in the Motion menu.
-    #define PROBE_DEPLOY_STOW_MENU
+   // #define PROBE_DEPLOY_STOW_MENU
   #endif
 
   // Include a page of printer information in the LCD Main Menu
@@ -1559,13 +1566,13 @@
   #define MANUAL_MOVE_DISTANCE_DEG             90, 45, 22.5, 5, 1  // (°)
 
   // BACK menu items keep the highlight at the top
-  //#define TURBO_BACK_MENU_ITEM
+  #define TURBO_BACK_MENU_ITEM
 
   // Insert a menu for preheating at the top level to allow for quick access
-  //#define PREHEAT_SHORTCUT_MENU_ITEM
+  #define PREHEAT_SHORTCUT_MENU_ITEM
 
   // Add Configuration > Debug Menu > Endstop Test for endstop/probe/runout testing
-  //#define LCD_ENDSTOP_TEST
+  #define LCD_ENDSTOP_TEST
 
 #endif // HAS_MARLINUI_MENU
 
@@ -1589,7 +1596,7 @@
     #if HAS_MARLINUI_U8GLIB
       #define BOOT_MARLIN_LOGO_ANIMATED // Animated Marlin logo. Costs ~3260 (or ~940) bytes of flash.
     #endif
-    #if ANY(HAS_MARLINUI_U8GLIB, TOUCH_UI_FTDI_EVE)
+    #if ANY(HAS_MARLINUI_U8GLIB, TOUCH_UI_FTDI_EVE, HAS_MARLINUI_HD44780)
       #define SHOW_CUSTOM_BOOTSCREEN      // Show the bitmap in Marlin/_Bootscreen.h on startup.
     #endif
   #endif
@@ -1609,10 +1616,10 @@
   //#define LCD_TIMEOUT_TO_STATUS 15000   // (ms)
 
   // Scroll a longer status message into view
-  //#define STATUS_MESSAGE_SCROLLING
+  #define STATUS_MESSAGE_SCROLLING
 
   // Apply a timeout to low-priority status messages
-  //#define STATUS_MESSAGE_TIMEOUT_SEC 30 // (seconds)
+  #define STATUS_MESSAGE_TIMEOUT_SEC 30 // (seconds)
 
   // On the Info Screen, display XY with one decimal place when possible
   //#define LCD_DECIMAL_SMALL_XY
@@ -1668,7 +1675,7 @@
   #define SET_INTERACTION_TIME          // Add 'C' parameter to set time until next filament change or other user interaction
   #define M73_REPORT                    // Report M73 values to host
   #if ALL(M73_REPORT, HAS_MEDIA)
-   // #define M73_REPORT_SD_ONLY            // Report only when printing from SD
+    #define M73_REPORT_SD_ONLY            // Report only when printing from SD
   #endif
 #endif
 
@@ -1948,16 +1955,7 @@
  * By default an onboard SD card reader may be shared as a USB mass-
  * storage device. This option hides the SD card from the host PC.
  */
-//#define NO_SD_HOST_DRIVE     // Disable SD Card access over USB (for security).
-
-/**
- * By default the framework is responsible for the shared media I/O.
- * Enable this if you need Marlin to take care of the shared media I/O.
- * Useful if shared media isn't working properly on some boards.
- */
-#if HAS_MEDIA && DISABLED(NO_SD_HOST_DRIVE)
-  //#define DISKIO_HOST_DRIVE
-#endif
+#define NO_SD_HOST_DRIVE     // Disable SD Card access over USB (for security).
 
 /**
  * Additional options for Graphical Displays
@@ -2021,9 +2019,9 @@
   //#define STATUS_CUTTER_ANIM        // Use a second bitmap to indicate spindle / laser active
   //#define STATUS_COOLER_ANIM        // Use a second bitmap to indicate laser cooling
   //#define STATUS_FLOWMETER_ANIM     // Use multiple bitmaps to indicate coolant flow
-#define STATUS_ALT_BED_BITMAP     // Use the alternative bed bitmap
-#define STATUS_ALT_FAN_BITMAP     // Use the alternative fan bitmap
-#define STATUS_FAN_FRAMES 4       // :[0,1,2,3,4] Number of fan animation frames
+  #define STATUS_ALT_BED_BITMAP     // Use the alternative bed bitmap
+  #define STATUS_ALT_FAN_BITMAP     // Use the alternative fan bitmap
+  #define STATUS_FAN_FRAMES 4      // :[0,1,2,3,4] Number of fan animation frames
 
   // Only one STATUS_HEAT_* option can be enabled
   //#define STATUS_HEAT_PERCENT       // Show heating in a progress bar
@@ -2331,7 +2329,7 @@
  *
  * See https://marlinfw.org/docs/features/lin_advance.html for full instructions.
  */
-#define LIN_ADVANCE
+//#define LIN_ADVANCE
 #if ENABLED(LIN_ADVANCE)
   #if ENABLED(DISTINCT_E_FACTORS)
     #define ADVANCE_K { 0.22 }    // (mm) Compression length per 1mm/s extruder speed, per extruder
@@ -2634,18 +2632,18 @@
 // For debug-echo: 128 bytes for the optimal speed.
 // Other output doesn't need to be that speedy.
 // :[0, 2, 4, 8, 16, 32, 64, 128, 256]
-#define TX_BUFFER_SIZE 128
+#define TX_BUFFER_SIZE 0
 
 // Host Receive Buffer Size
 // Without XON/XOFF flow control (see SERIAL_XON_XOFF below) 32 bytes should be enough.
 // To use flow control, set this buffer size to at least 1024 bytes.
 // :[0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-#define RX_BUFFER_SIZE 1024
+//#define RX_BUFFER_SIZE 1024
 
 #if RX_BUFFER_SIZE >= 1024
   // Enable to have the controller send XON/XOFF control characters to
   // the host to signal the RX buffer is becoming full.
-  #define SERIAL_XON_XOFF
+  //#define SERIAL_XON_XOFF
 #endif
 
 #if HAS_MEDIA
@@ -2703,7 +2701,7 @@
 //#define NO_TIMEOUTS 1000 // (ms)
 
 // Some clients will have this feature soon. This could make the NO_TIMEOUTS unnecessary.
-//#define ADVANCED_OK
+#define ADVANCED_OK
 
 // Printrun may have trouble receiving long strings all at once.
 // This option inserts short delays between lines of serial output.
@@ -2971,15 +2969,12 @@
  *    Some boards have simple jumper connections! See your board's documentation.
  *  - These drivers can also be used with Hardware Serial.
  *
- * The TMC26XStepper library is required for TMC26X stepper drivers.
- *   https://github.com/MarlinFirmware/TMC26XStepper
- *
  * The TMCStepper library is required for other TMC stepper drivers.
  *   https://github.com/teemuatlut/TMCStepper
  *
  * @section tmc/config
  */
-#if HAS_TRINAMIC_CONFIG || HAS_TMC26X
+#if HAS_TRINAMIC_CONFIG
 
   #define HOLD_MULTIPLIER    0.5  // Scales down the holding current from run current
 
@@ -2993,7 +2988,7 @@
     #define X_CURRENT       800        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for homing. (Typically lower than *_CURRENT.)
     #define X_MICROSTEPS     16        // 0..256
-    #define X_RSENSE          0.11     // Multiplied x1000 for TMC26X
+    #define X_RSENSE          0.11
     #define X_CHAIN_POS      -1        // -1..0: Not chained. 1: MCU MOSI connected. 2: Next in chain, ...
     //#define X_INTERPOLATE  true      // Enable to override 'INTERPOLATE' for the X axis
     //#define X_HOLD_MULTIPLIER 0.5    // Enable to override 'HOLD_MULTIPLIER' for the X axis
@@ -3493,7 +3488,7 @@
    */
   #define TMC_ADV() {  }
 
-#endif // HAS_TRINAMIC_CONFIG || HAS_TMC26X
+#endif // HAS_TRINAMIC_CONFIG
 
 // @section i2cbus
 
@@ -4166,8 +4161,8 @@
   #if ENABLED(HOST_PROMPT_SUPPORT)
     #define HOST_STATUS_NOTIFICATIONS     // Send some status messages to the host as notifications
   #endif
-  //#define HOST_START_MENU_ITEM          // Add a menu item that tells the host to start
-  //#define HOST_SHUTDOWN_MENU_ITEM       // Add a menu item that tells the host to shut down
+  #define HOST_START_MENU_ITEM          // Add a menu item that tells the host to start
+  #define HOST_SHUTDOWN_MENU_ITEM       // Add a menu item that tells the host to shut down
 #endif
 
 // @section extras
@@ -4536,12 +4531,12 @@
 //
 // M42 - Set pin states
 //
-//#define DIRECT_PIN_CONTROL
+#define DIRECT_PIN_CONTROL
 
 //
 // M43 - display pin status, toggle pins, watch pins, watch endstops & toggle LED, test servo probe
 //
-//#define PINS_DEBUGGING
+#define PINS_DEBUGGING
 
 // Enable Tests that will run at startup and produce a report
 //#define MARLIN_TEST_BUILD
@@ -4568,7 +4563,7 @@
  * Software Reset options
  */
 #define SOFT_RESET_VIA_SERIAL         // 'KILL' and '^X' commands will soft-reset the controller
-//#define SOFT_RESET_ON_KILL            // Use a digital button to soft-reset the controller after KILL
+#define SOFT_RESET_ON_KILL            // Use a digital button to soft-reset the controller after KILL
 
 // Report uncleaned reset reason from register r2 instead of MCUSR. Supported by Optiboot on AVR.
 //#define OPTIBOOT_RESET_REASON

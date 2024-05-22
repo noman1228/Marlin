@@ -20,8 +20,8 @@
  *
  */
 #pragma once
-#error "Don't build with import-2.1.x configurations!"
-#error "Use the 'bugfix...' or 'release...' configurations matching your Marlin version."
+
+#define CONFIG_EXAMPLES_DIR "Creality/Ender-3 Neo"
 
 /**
  * Configuration.h
@@ -63,7 +63,7 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(ProMate, default config)" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "Jason Theriault 5-21-2024)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 // @section machine
@@ -95,7 +95,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 115200
+#define BAUDRATE 250000
 
 //#define BAUD_RATE_GCODE     // Enable G-code M575 to set the baud rate
 
@@ -128,7 +128,7 @@
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Ender-3 Neo"
+#define CUSTOM_MACHINE_NAME "NEO (5/22/24)"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -684,7 +684,7 @@
  * MPCTEMP : Predictive Model temperature control. (~1.8K without auto-tune)
  */
 #define PIDTEMP           // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
-//#define MPCTEMP         // ** EXPERIMENTAL ** See https://marlinfw.org/docs/features/model_predictive_control.html
+//#define MPCTEMP         // See https://marlinfw.org/docs/features/model_predictive_control.html
 
 #define PID_MAX  255      // Limit hotend current while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
 #define PID_K1     0.95   // Smoothing factor within any PID loop
@@ -1218,7 +1218,7 @@
  *
  * :[2,3,4,5,6,7]
  */
-//#define ENDSTOP_NOISE_THRESHOLD 2
+#define ENDSTOP_NOISE_THRESHOLD 2
 
 // Check for stuck or disconnected endstops during homing moves.
 //#define DETECT_BROKEN_ENDSTOP
@@ -1599,7 +1599,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -39, -10, -1 }
+#define NOZZLE_TO_PROBE_OFFSET { -39, -10, -2.75 }
 
 // Enable and set to use a specific tool for probing. Disable to allow any tool.
 #define PROBING_TOOL 0
@@ -1609,13 +1609,13 @@
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 10
+#define PROBING_MARGIN 5
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (100*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_FEEDRATE_FAST (4*60)
+#define Z_PROBE_FEEDRATE_FAST (10*60)
 
 // Feedrate (mm/min) for the "accurate" probe of each point
 #define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 2)
@@ -1666,7 +1666,7 @@
  * A total of 3 or more adds more slow probes, taking the average.
  */
 #define MULTIPLE_PROBING 2
-//#define EXTRA_PROBING    1
+#define EXTRA_PROBING    1
 
 /**
  * Z probes require clearance when deploying, stowing, and moving between
@@ -2083,7 +2083,7 @@
 #define PREHEAT_BEFORE_LEVELING
 #if ENABLED(PREHEAT_BEFORE_LEVELING)
   #define LEVELING_NOZZLE_TEMP   0   // (°C) Only applies to E0 at this time
-  #define LEVELING_BED_TEMP     50
+  #define LEVELING_BED_TEMP     60
 #endif
 
 /**
@@ -2237,18 +2237,18 @@
 #endif
 
 // Add a menu item to move between bed corners for manual bed adjustment
-#define LCD_BED_TRAMMING
+//#define LCD_BED_TRAMMING
 
 #if ENABLED(LCD_BED_TRAMMING)
   #define BED_TRAMMING_INSET_LFRB { 30, 30, 30, 30 } // (mm) Left, Front, Right, Back insets
   #define BED_TRAMMING_HEIGHT      0.0        // (mm) Z height of nozzle at tramming points
   #define BED_TRAMMING_Z_HOP       4.0        // (mm) Z raise between tramming points
   //#define BED_TRAMMING_INCLUDE_CENTER       // Move to the center after the last corner
-  #define BED_TRAMMING_USE_PROBE
+  //#define BED_TRAMMING_USE_PROBE
   #if ENABLED(BED_TRAMMING_USE_PROBE)
     #define BED_TRAMMING_PROBE_TOLERANCE 0.1  // (mm)
     #define BED_TRAMMING_VERIFY_RAISED        // After adjustment triggers the probe, re-probe to verify
-    #define BED_TRAMMING_AUDIO_FEEDBACK
+    //#define BED_TRAMMING_AUDIO_FEEDBACK
   #endif
 
   /**
